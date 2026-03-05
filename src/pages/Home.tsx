@@ -61,11 +61,12 @@ const Home = () => {
               Launch Bangalore Dashboard
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
-            <button
+            <Link
+              to="/report"
               className="px-8 py-4 bg-white/5 border border-white/10 backdrop-blur-md text-white font-bold rounded-xl transition-all hover:bg-white/10 flex items-center gap-2"
             >
               Report Infrastructure Damage
-            </button>
+            </Link>
           </motion.div>
         </div>
         

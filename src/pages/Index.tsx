@@ -47,13 +47,13 @@ const Index = () => {
             <p className="text-xs text-slate-400 font-mono uppercase tracking-widest">Bangalore Monitoring System</p>
           </div>
         </div>
-        <button
-          onClick={() => setModalOpen(true)}
+        <Link
+          to="/report"
           className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#38bdf8] text-[#0f172a] text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-[#38bdf8]/20"
         >
           <Plus size={18} />
           Report Infrastructure Damage
-        </button>
+        </Link>
       </motion.header>
 
       {/* Metrics */}
