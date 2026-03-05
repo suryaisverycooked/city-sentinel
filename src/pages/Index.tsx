@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Plus, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
 import { initialReports, futureRiskMarkers, type InfrastructureReport } from "@/data/mockData";
 import MetricsBar from "@/components/dashboard/MetricsBar";
 import CityMap from "@/components/dashboard/CityMap";

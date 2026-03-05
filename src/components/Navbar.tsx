@@ -3,7 +3,7 @@ import { Shield, LayoutDashboard, FileText, Home } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
-  const [location] = useLocation();
+  const location = useLocation();
 
   const navItems = [
     { name: "Home", path: "/", icon: Home },
@@ -23,7 +23,7 @@ const Navbar = () => {
 
         <div className="flex items-center gap-1 sm:gap-4">
           {navItems.map((item) => {
-            const isActive = location === item.path;
+            const isActive = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
