@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Plus, Shield } from "lucide-react";
-import { initialReports, type InfrastructureReport } from "@/data/mockData";
+import { initialReports, futureRiskMarkers, type InfrastructureReport } from "@/data/mockData";
 import MetricsBar from "@/components/dashboard/MetricsBar";
 import CityMap from "@/components/dashboard/CityMap";
 import AlertPanel from "@/components/dashboard/AlertPanel";
@@ -12,10 +12,23 @@ const Index = () => {
   const [reports, setReports] = useState<InfrastructureReport[]>(initialReports);
   const [timelineProgress, setTimelineProgress] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [highlightedAlertId, setHighlightedAlertId] = useState<string | null>(null);
 
   const addReport = (report: InfrastructureReport) => {
     setReports((prev) => [...prev, report]);
   };
+
+  // Merge future risk markers when timeline progresses past threshold
+  const visibleReports = useMemo(() => {
+    const emerging = futureRiskMarkers
+      .filter((_, i) => timelineProgress > (i + 1) * 0.25)
+      .map((r, i) => ({
+        ...r,
+        id: `FUT-${i + 1}`,
+        timestamp: new Date().toISOString(),
+      }));
+    return [...reports, ...emerging];
+  }, [reports, timelineProgress]);
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 flex flex-col gap-4">
@@ -44,15 +57,20 @@ const Index = () => {
       </motion.header>
 
       {/* Metrics */}
-      <MetricsBar reports={reports} />
+      <MetricsBar reports={visibleReports} />
 
       {/* Risk Timeline Slider */}
       <RiskSlider value={timelineProgress} onChange={setTimelineProgress} />
 
       {/* Main content */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 min-h-0">
-        <CityMap reports={reports} timelineProgress={timelineProgress} />
-        <AlertPanel reports={reports} />
+        <CityMap
+          reports={visibleReports}
+          timelineProgress={timelineProgress}
+          highlightedId={highlightedAlertId}
+          onClearHighlight={() => setHighlightedAlertId(null)}
+        />
+        <AlertPanel reports={visibleReports} onSelectAlert={setHighlightedAlertId} />
       </div>
 
       {/* Modal */}
