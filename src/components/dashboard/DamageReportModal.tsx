@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, Loader2, CheckCircle, MapPin, ImageIcon, AlertTriangle } from "lucide-react";
+import { X, Upload, Loader as Loader2, CircleCheck as CheckCircle, MapPin, Image as ImageIcon, TriangleAlert as AlertTriangle } from "lucide-react";
 import { getIriColorHsl, getIriColor, type InfrastructureReport } from "@/data/mockData";
 import { analyzeInfrastructure } from "@/utils/analyzeInfrastructure";
 import { toast } from "sonner";

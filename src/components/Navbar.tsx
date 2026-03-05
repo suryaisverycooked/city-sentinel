@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Shield, LayoutDashboard, FileText, Home } from "lucide-react";
+import { Shield, LayoutDashboard, FileText, Chrome as Home } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
