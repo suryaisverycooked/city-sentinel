@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 213 31% 91%;
+
+    --card: 217 33% 14%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 217 33% 14%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 213 31% 91%;
+
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 217 33% 22%;
+    --accent-foreground: 213 31% 91%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --safe: 160 84% 39%;
+    --safe-foreground: 0 0% 100%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 0 0% 0%;
+    --critical: 0 84% 60%;
+    --critical-foreground: 0 0% 100%;
+    --system: 217 91% 60%;
+
+    --glass: 217 33% 17%;
+    --glass-border: 217 33% 25%;
+
+    --sidebar-background: 222 47% 9%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 18%;
+    --sidebar-accent-foreground: 213 31% 91%;
+    --sidebar-border: 217 33% 20%;
+    --sidebar-ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-xl border border-glass-border;
+    background: hsl(var(--glass) / 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-card-strong {
+    @apply rounded-xl border border-glass-border;
+    background: hsl(var(--glass) / 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .glow-critical {
+    box-shadow: 0 0 20px hsl(var(--critical) / 0.3), 0 0 40px hsl(var(--critical) / 0.1);
+  }
+
+  .glow-safe {
+    box-shadow: 0 0 12px hsl(var(--safe) / 0.2);
+  }
+
+  .glow-system {
+    box-shadow: 0 0 20px hsl(var(--system) / 0.3);
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
