@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
 import { AlertTriangle } from "lucide-react";
 import type { InfrastructureReport } from "@/data/mockData";
-import { getIriColor } from "@/data/mockData";
+import { getIriColorHsl } from "@/data/mockData";
 
 interface AlertPanelProps {
   reports: InfrastructureReport[];
+  onSelectAlert?: (id: string) => void;
 }
 
-export default function AlertPanel({ reports }: AlertPanelProps) {
+export default function AlertPanel({ reports, onSelectAlert }: AlertPanelProps) {
   const criticalReports = [...reports]
     .filter((r) => r.iriScore > 50)
     .sort((a, b) => b.iriScore - a.iriScore);
@@ -21,6 +22,7 @@ export default function AlertPanel({ reports }: AlertPanelProps) {
       </div>
       <div className="flex-1 overflow-y-auto p-3 space-y-2">
         {criticalReports.map((r, i) => {
+          const isHighCritical = r.iriScore > 80;
           const isCritical = r.iriScore > 60;
           return (
             <motion.div
@@ -28,12 +30,27 @@ export default function AlertPanel({ reports }: AlertPanelProps) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.05 }}
-              className={`p-3 rounded-lg bg-secondary/50 border border-border hover:border-primary/30 transition-all duration-300 ${isCritical ? "glow-critical" : ""}`}
+              whileHover={{ scale: 1.02, x: -2 }}
+              onClick={() => onSelectAlert?.(r.id)}
+              className={`p-3 rounded-lg bg-secondary/50 border border-border cursor-pointer transition-all duration-300 ${
+                isHighCritical ? "glow-critical" : isCritical ? "hover:border-critical/30" : "hover:border-warning/30"
+              }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium">{r.type}</span>
+                <div className="flex items-center gap-2">
+                  {r.imageUrl && (
+                    <div className="w-8 h-8 rounded overflow-hidden border border-border shrink-0">
+                      <img src={r.imageUrl} alt={r.type} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <span className="text-sm font-medium">{r.type}</span>
+                </div>
                 <span
-                  className={`text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-${getIriColor(r.iriScore)} text-${getIriColor(r.iriScore)}-foreground`}
+                  className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
+                  style={{
+                    background: getIriColorHsl(r.iriScore),
+                    color: "white",
+                  }}
                 >
                   {r.iriScore}
                 </span>

@@ -1,12 +1,13 @@
 export interface InfrastructureReport {
   id: string;
-  type: "Pothole" | "Crack" | "Sinkhole" | "Bridge Erosion" | "Road Buckling";
+  type: "Pothole" | "Crack" | "Sinkhole" | "Bridge Erosion" | "Road Buckling" | "Surface Deformation";
   severity: "Low" | "Medium" | "High";
   iriScore: number;
   location: string;
   coordinates: { x: number; y: number };
   timestamp: string;
   futureIriScore: number;
+  imageUrl?: string;
 }
 
 export const initialReports: InfrastructureReport[] = [
@@ -104,7 +105,14 @@ export function getIriColorHsl(score: number): string {
   return "hsl(var(--critical))";
 }
 
-const damageTypes: InfrastructureReport["type"][] = ["Pothole", "Crack", "Sinkhole", "Bridge Erosion", "Road Buckling"];
+export function estimateTCR(iriScore: number): string {
+  if (iriScore >= 80) return `${Math.max(3, Math.floor((100 - iriScore) * 2))} days`;
+  if (iriScore >= 60) return `${Math.floor((100 - iriScore) * 1.5)} days`;
+  if (iriScore >= 40) return `${Math.floor((100 - iriScore) * 3)} days`;
+  return "6+ months";
+}
+
+const damageTypes: InfrastructureReport["type"][] = ["Pothole", "Crack", "Sinkhole", "Bridge Erosion", "Road Buckling", "Surface Deformation"];
 const locations = [
   "Market Street",
   "University Ave",
@@ -114,7 +122,14 @@ const locations = [
   "Pacific Heights",
 ];
 
-export function generateRandomReport(): Omit<InfrastructureReport, "id" | "timestamp"> {
+// Future emerging risk locations for slider prediction
+export const futureRiskMarkers: Omit<InfrastructureReport, "id" | "timestamp">[] = [
+  { type: "Crack", severity: "Medium", iriScore: 10, location: "North Industrial Rd", coordinates: { x: 58, y: 18 }, futureIriScore: 52 },
+  { type: "Surface Deformation", severity: "Low", iriScore: 5, location: "South Bay Connector", coordinates: { x: 15, y: 55 }, futureIriScore: 44 },
+  { type: "Pothole", severity: "Low", iriScore: 8, location: "Westfield Junction", coordinates: { x: 88, y: 42 }, futureIriScore: 58 },
+];
+
+export function generateRandomReport(imageUrl?: string): Omit<InfrastructureReport, "id" | "timestamp"> {
   const iriScore = Math.floor(Math.random() * 80) + 20;
   const severity: InfrastructureReport["severity"] =
     iriScore > 60 ? "High" : iriScore > 30 ? "Medium" : "Low";
@@ -128,5 +143,6 @@ export function generateRandomReport(): Omit<InfrastructureReport, "id" | "times
       y: Math.floor(Math.random() * 60) + 20,
     },
     futureIriScore: Math.min(100, iriScore + Math.floor(Math.random() * 25) + 5),
+    imageUrl,
   };
 }

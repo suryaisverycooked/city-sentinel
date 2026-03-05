@@ -7,6 +7,8 @@ interface RiskSliderProps {
 }
 
 export default function RiskSlider({ value, onChange }: RiskSliderProps) {
+  const monthLabel = value === 0 ? "Today" : `+${Math.round(value * 12)} Months`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -15,7 +17,7 @@ export default function RiskSlider({ value, onChange }: RiskSliderProps) {
     >
       <Clock size={16} className="text-system shrink-0" />
       <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider whitespace-nowrap">
-        Risk Timeline
+        Infrastructure Risk Forecast
       </span>
       <div className="flex-1 flex items-center gap-3">
         <span className="text-xs font-mono text-safe">Today</span>
@@ -33,6 +35,16 @@ export default function RiskSlider({ value, onChange }: RiskSliderProps) {
               [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full
               [&::-moz-range-thumb]:bg-system [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background"
           />
+          {value > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute -top-7 text-xs font-mono text-warning"
+              style={{ left: `${value * 100}%`, transform: "translateX(-50%)" }}
+            >
+              {monthLabel}
+            </motion.div>
+          )}
         </div>
         <span className="text-xs font-mono text-critical">+12 Months</span>
       </div>
