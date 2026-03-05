@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @layer base {
   :root {
@@ -72,32 +72,37 @@
 
 @layer components {
   .glass-card {
-    @apply rounded-xl border border-glass-border;
-    background: hsl(var(--glass) / 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    @apply bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl;
   }
 
   .glass-card-strong {
-    @apply rounded-xl border border-glass-border;
-    background: hsl(var(--glass) / 0.85);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    @apply bg-slate-900/80 backdrop-blur-2xl border border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-2xl;
+  }
+
+  .glow-system {
+    @apply shadow-[0_0_20px_rgba(56,189,248,0.3)];
   }
 
   .glow-critical {
-    box-shadow: 0 0 20px hsl(var(--critical) / 0.3), 0 0 40px hsl(var(--critical) / 0.1);
+    @apply shadow-[0_0_20px_rgba(239,68,68,0.3)];
   }
 
   .glow-safe {
     box-shadow: 0 0 12px hsl(var(--safe) / 0.2);
   }
 
-  .glow-system {
-    box-shadow: 0 0 20px hsl(var(--system) / 0.3);
-  }
-
   .mono {
     font-family: 'JetBrains Mono', monospace;
   }
+}
+
+@layer utilities {
+  .animate-slow-zoom {
+    animation: slow-zoom 20s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes slow-zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
 }

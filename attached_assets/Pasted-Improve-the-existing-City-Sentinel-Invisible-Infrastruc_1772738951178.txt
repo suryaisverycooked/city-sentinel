@@ -1,0 +1,226 @@
+Improve the existing City Sentinel (Invisible Infrastructure) React + Vite + Tailwind project.
+
+Do NOT rebuild the application.
+Modify the current code while keeping the existing dashboard, map system, and report modal working.
+
+The final application should have three core features:
+
+AI Infrastructure Damage Detection
+
+Infrastructure Risk Index (IRI) scoring
+
+Future Infrastructure Risk Prediction
+
+The prototype should focus only on Bangalore (Bengaluru, India).
+
+1. Landing Page (New Home Page)
+
+Create a modern landing page for the product.
+
+File:
+
+src/pages/Home.tsx
+
+Design style:
+
+• cinematic hero section
+• full width background image of a city skyline or infrastructure
+• glassmorphism cards
+• modern typography
+• smooth animations
+
+Color palette:
+
+background: #0f172a
+accent: #38bdf8
+risk-high: #ef4444
+risk-medium: #f59e0b
+risk-low: #10b981
+
+Hero section text:
+
+Headline:
+
+Predict Infrastructure Failure
+Before It Happens
+
+Subtitle:
+
+AI-powered monitoring platform that detects infrastructure damage,
+calculates risk, and predicts failures across Bangalore.
+
+Buttons:
+
+Launch Bangalore Dashboard
+Report Infrastructure Damage
+
+Launch Dashboard should navigate to:
+
+/dashboard
+2. Routing
+
+Add React Router.
+
+Routes:
+
+/ → Landing Page
+/dashboard → Existing Infrastructure Dashboard
+
+Example:
+
+<Route path="/" element={<Home />} />
+<Route path="/dashboard" element={<Dashboard />} />
+3. Focus the Map on Bangalore
+
+Modify the existing map component.
+
+File:
+
+src/components/dashboard/CityMap.tsx
+
+Set the map center to Bangalore:
+
+latitude: 12.9716
+longitude: 77.5946
+zoom: 12
+
+Use a dark map style:
+
+https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png
+
+This should display the full Bangalore city map.
+
+4. Add Bangalore Infrastructure Locations
+
+Add several real Bangalore zones as example data:
+
+Whitefield
+Indiranagar
+Electronic City
+BTM Layout
+Koramangala
+Hebbal
+Yelahanka
+MG Road
+
+Each location should include:
+
+location name
+damage type
+IRI score
+severity
+
+Example:
+
+Whitefield
+Damage: Road Crack
+IRI: 72
+Severity: High
+5. Improve Image Analysis Logic
+
+The current system incorrectly classifies images.
+
+Improve the simulated AI analysis.
+
+Create:
+
+src/utils/analyzeInfrastructure.ts
+
+Classification rules:
+
+Large structural destruction → Building Structural Failure
+
+Large road cavity → Pothole
+
+Long surface crack → Road Surface Crack
+
+Edge erosion near water → Bridge Erosion
+
+Severity rules:
+
+minor crack → Low
+moderate pothole → Medium
+large pothole → High
+collapsed structure → Critical
+6. Infrastructure Risk Index (IRI)
+
+Use scoring from 0–100.
+
+Ranges:
+
+0–25 → Low Risk
+26–50 → Moderate Risk
+51–75 → High Risk
+76–100 → Critical Risk
+
+Score should depend on:
+
+damage severity
+infrastructure importance
+traffic exposure
+
+Example:
+
+bridge damage → high weight
+highway pothole → medium weight
+sidewalk crack → low weight
+7. Improve Damage Report Modal
+
+When an image is uploaded:
+
+Display:
+
+image preview
+damage type
+severity
+IRI score
+location
+
+Add animated IRI progress bar.
+
+Color should match severity.
+
+8. Improve Map Markers
+
+Markers should use risk colors:
+
+green → low
+yellow → moderate
+orange → high
+red → critical
+
+Add popup:
+
+Location
+Damage type
+IRI score
+Time to critical failure
+9. Risk Prediction Slider
+
+Keep the existing risk timeline slider.
+
+Rename it:
+
+Infrastructure Risk Forecast
+
+When slider moves toward +12 months:
+
+simulate infrastructure deterioration.
+
+Example:
+
+IRI 42 → 61 → 74 → 88
+
+Markers gradually change color.
+
+10. UI Polish
+
+Improve visual quality:
+
+• glowing markers for high risk
+• smooth transitions
+• hover effects
+• subtle shadows
+• glassmorphism cards
+
+The UI should look like a real smart city monitoring dashboard.

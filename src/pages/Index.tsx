@@ -31,7 +31,7 @@ const Index = () => {
   }, [reports, timelineProgress]);
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-6 flex flex-col gap-4">
+    <div className="min-h-screen bg-[#0f172a] p-4 md:p-6 flex flex-col gap-4 text-white">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
@@ -39,20 +39,20 @@ const Index = () => {
         className="flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10 glow-system">
-            <Shield size={24} className="text-system" />
+          <div className="p-2 rounded-lg bg-[#38bdf8]/10 border border-[#38bdf8]/20 glow-system">
+            <Shield size={24} className="text-[#38bdf8]" />
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight">Invisible Infrastructure</h1>
-            <p className="text-xs text-muted-foreground font-mono">Smart City Monitoring System</p>
+            <p className="text-xs text-slate-400 font-mono uppercase tracking-widest">Bangalore Monitoring System</p>
           </div>
         </div>
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity glow-system"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#38bdf8] text-[#0f172a] text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-[#38bdf8]/20"
         >
-          <Plus size={16} />
-          Report Damage
+          <Plus size={18} />
+          Report Infrastructure Damage
         </button>
       </motion.header>
 

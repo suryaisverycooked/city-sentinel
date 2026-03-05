@@ -14,16 +14,16 @@ export default function AlertPanel({ reports, onSelectAlert }: AlertPanelProps) 
     .sort((a, b) => b.iriScore - a.iriScore);
 
   return (
-    <div className="glass-card h-full flex flex-col">
-      <div className="p-4 border-b border-border flex items-center gap-2">
-        <AlertTriangle size={16} className="text-critical" />
-        <h2 className="text-sm font-semibold uppercase tracking-wider">Critical Alerts</h2>
-        <span className="ml-auto text-xs font-mono text-muted-foreground">{criticalReports.length}</span>
+    <div className="glass-card h-full flex flex-col bg-white/5 border-white/10">
+      <div className="p-4 border-b border-white/10 flex items-center gap-2">
+        <AlertTriangle size={16} className="text-[#ef4444]" />
+        <h2 className="text-sm font-bold uppercase tracking-[0.15em]">High Risk Zones</h2>
+        <span className="ml-auto text-xs font-mono text-slate-500">{criticalReports.length}</span>
       </div>
-      <div className="flex-1 overflow-y-auto p-3 space-y-2">
+      <div className="flex-1 overflow-y-auto p-3 space-y-3">
         {criticalReports.map((r, i) => {
-          const isHighCritical = r.iriScore > 80;
-          const isCritical = r.iriScore > 60;
+          const score = r.iriScore;
+          const color = getIriColor(score);
           return (
             <motion.div
               key={r.id}
@@ -32,30 +32,27 @@ export default function AlertPanel({ reports, onSelectAlert }: AlertPanelProps) 
               transition={{ delay: i * 0.05 }}
               whileHover={{ scale: 1.02, x: -2 }}
               onClick={() => onSelectAlert?.(r.id)}
-              className={`p-3 rounded-lg bg-secondary/50 border border-border cursor-pointer transition-all duration-300 ${
-                isHighCritical ? "glow-critical" : isCritical ? "hover:border-critical/30" : "hover:border-warning/30"
-              }`}
+              className="p-4 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:border-white/20 transition-all duration-300 relative group overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-1">
+              <div className="absolute top-0 right-0 w-1 h-full" style={{ backgroundColor: color }} />
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  {r.imageUrl && (
-                    <div className="w-8 h-8 rounded overflow-hidden border border-border shrink-0">
-                      <img src={r.imageUrl} alt={r.type} className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                  <span className="text-sm font-medium">{r.type}</span>
+                  <span className="text-sm font-bold text-white">{r.type}</span>
                 </div>
                 <span
-                  className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
+                  className="text-xs font-mono font-bold px-2 py-0.5 rounded-lg"
                   style={{
-                    background: getIriColorHsl(r.iriScore),
-                    color: "white",
+                    backgroundColor: `${color}20`,
+                    color: color,
                   }}
                 >
-                  {r.iriScore}
+                  {score}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">{r.location}</p>
+              <div className="flex items-center gap-1.5">
+                 <MapPin size={12} className="text-slate-500" />
+                 <p className="text-xs text-slate-400 font-medium">{r.location}</p>
+              </div>
             </motion.div>
           );
         })}

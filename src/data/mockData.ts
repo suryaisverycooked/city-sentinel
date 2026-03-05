@@ -1,7 +1,7 @@
 export interface InfrastructureReport {
   id: string;
-  type: "Pothole" | "Crack" | "Sinkhole" | "Bridge Erosion" | "Road Buckling" | "Surface Deformation";
-  severity: "Low" | "Medium" | "High";
+  type: "Pothole" | "Road Surface Crack" | "Sinkhole" | "Bridge Erosion" | "Road Buckling" | "Building Structural Failure";
+  severity: "Low" | "Medium" | "High" | "Critical";
   iriScore: number;
   location: string;
   coordinates: { x: number; y: number };
@@ -12,137 +12,110 @@ export interface InfrastructureReport {
 
 export const initialReports: InfrastructureReport[] = [
   {
-    id: "INF-001",
-    type: "Pothole",
+    id: "BLR-001",
+    type: "Road Surface Crack",
     severity: "High",
-    iriScore: 82,
-    location: "5th Ave & Main St",
-    coordinates: { x: 35, y: 40 },
+    iriScore: 72,
+    location: "Whitefield",
+    coordinates: { x: 85, y: 45 },
     timestamp: "2026-03-04T14:30:00",
-    futureIriScore: 95,
+    futureIriScore: 88,
   },
   {
-    id: "INF-002",
-    type: "Crack",
+    id: "BLR-002",
+    type: "Pothole",
     severity: "Medium",
-    iriScore: 45,
-    location: "Harbor Bridge Rd",
-    coordinates: { x: 62, y: 25 },
+    iriScore: 48,
+    location: "Indiranagar",
+    coordinates: { x: 65, y: 42 },
     timestamp: "2026-03-03T09:15:00",
-    futureIriScore: 72,
+    futureIriScore: 65,
   },
   {
-    id: "INF-003",
+    id: "BLR-003",
     type: "Bridge Erosion",
     severity: "High",
     iriScore: 78,
-    location: "Riverside Crossing",
-    coordinates: { x: 75, y: 55 },
+    location: "Hebbal",
+    coordinates: { x: 50, y: 20 },
     timestamp: "2026-03-02T16:45:00",
-    futureIriScore: 91,
+    futureIriScore: 92,
   },
   {
-    id: "INF-004",
+    id: "BLR-004",
     type: "Road Buckling",
     severity: "Low",
     iriScore: 22,
-    location: "Central Park West",
-    coordinates: { x: 45, y: 65 },
+    location: "Electronic City",
+    coordinates: { x: 75, y: 85 },
     timestamp: "2026-03-01T11:00:00",
-    futureIriScore: 48,
+    futureIriScore: 45,
   },
   {
-    id: "INF-005",
-    type: "Crack",
+    id: "BLR-005",
+    type: "Road Surface Crack",
     severity: "Low",
-    iriScore: 18,
-    location: "Oak Street Tunnel",
-    coordinates: { x: 20, y: 70 },
+    iriScore: 15,
+    location: "Koramangala",
+    coordinates: { x: 60, y: 65 },
     timestamp: "2026-02-28T08:30:00",
-    futureIriScore: 35,
+    futureIriScore: 32,
   },
   {
-    id: "INF-006",
-    type: "Sinkhole",
+    id: "BLR-006",
+    type: "Building Structural Failure",
     severity: "High",
-    iriScore: 91,
-    location: "Downtown Plaza",
-    coordinates: { x: 50, y: 35 },
+    iriScore: 85,
+    location: "MG Road",
+    coordinates: { x: 55, y: 48 },
     timestamp: "2026-03-05T07:00:00",
-    futureIriScore: 98,
+    futureIriScore: 96,
   },
   {
-    id: "INF-007",
+    id: "BLR-007",
     type: "Pothole",
     severity: "Medium",
-    iriScore: 55,
-    location: "Elm Street Corridor",
-    coordinates: { x: 28, y: 48 },
+    iriScore: 52,
+    location: "BTM Layout",
+    coordinates: { x: 58, y: 72 },
     timestamp: "2026-02-27T13:20:00",
-    futureIriScore: 74,
+    futureIriScore: 70,
   },
   {
-    id: "INF-008",
-    type: "Crack",
+    id: "BLR-008",
+    type: "Road Surface Crack",
     severity: "Medium",
     iriScore: 38,
-    location: "Industrial Zone B",
-    coordinates: { x: 82, y: 72 },
+    location: "Yelahanka",
+    coordinates: { x: 45, y: 15 },
     timestamp: "2026-02-26T10:45:00",
     futureIriScore: 61,
   },
 ];
 
 export function getIriColor(score: number): string {
-  if (score <= 30) return "safe";
-  if (score <= 60) return "warning";
-  return "critical";
+  if (score <= 25) return "#10b981"; // Low
+  if (score <= 50) return "#f59e0b"; // Medium
+  if (score <= 75) return "#ef4444"; // High
+  return "#991b1b"; // Critical
 }
 
 export function getIriColorHsl(score: number): string {
-  if (score <= 30) return "hsl(var(--safe))";
-  if (score <= 60) return "hsl(var(--warning))";
-  return "hsl(var(--critical))";
+  if (score <= 25) return "hsl(142 70% 45%)";
+  if (score <= 50) return "hsl(37 91% 50%)";
+  if (score <= 75) return "hsl(0 84% 60%)";
+  return "hsl(0 84% 35%)";
 }
 
 export function estimateTCR(iriScore: number): string {
-  if (iriScore >= 80) return `${Math.max(3, Math.floor((100 - iriScore) * 2))} days`;
-  if (iriScore >= 60) return `${Math.floor((100 - iriScore) * 1.5)} days`;
-  if (iriScore >= 40) return `${Math.floor((100 - iriScore) * 3)} days`;
-  return "6+ months";
+  if (iriScore >= 76) return `${Math.max(3, Math.floor((100 - iriScore) * 1.5))} days`;
+  if (iriScore >= 51) return `${Math.floor((100 - iriScore) * 2)} days`;
+  if (iriScore >= 26) return `${Math.floor((100 - iriScore) * 4)} days`;
+  return "12+ months";
 }
 
-const damageTypes: InfrastructureReport["type"][] = ["Pothole", "Crack", "Sinkhole", "Bridge Erosion", "Road Buckling", "Surface Deformation"];
-const locations = [
-  "Market Street",
-  "University Ave",
-  "Bay Bridge Access",
-  "Mission District Rd",
-  "Sunset Blvd",
-  "Pacific Heights",
-];
-
-// Future emerging risk locations for slider prediction
 export const futureRiskMarkers: Omit<InfrastructureReport, "id" | "timestamp">[] = [
-  { type: "Crack", severity: "Medium", iriScore: 10, location: "North Industrial Rd", coordinates: { x: 58, y: 18 }, futureIriScore: 52 },
-  { type: "Surface Deformation", severity: "Low", iriScore: 5, location: "South Bay Connector", coordinates: { x: 15, y: 55 }, futureIriScore: 44 },
-  { type: "Pothole", severity: "Low", iriScore: 8, location: "Westfield Junction", coordinates: { x: 88, y: 42 }, futureIriScore: 58 },
+  { type: "Road Surface Crack", severity: "Medium", iriScore: 10, location: "Jayanagar", coordinates: { x: 45, y: 60 }, futureIriScore: 55 },
+  { type: "Pothole", severity: "Low", iriScore: 5, location: "HSR Layout", coordinates: { x: 70, y: 68 }, futureIriScore: 48 },
+  { type: "Bridge Erosion", severity: "Low", iriScore: 12, location: "Outer Ring Road", coordinates: { x: 80, y: 30 }, futureIriScore: 62 },
 ];
-
-export function generateRandomReport(imageUrl?: string): Omit<InfrastructureReport, "id" | "timestamp"> {
-  const iriScore = Math.floor(Math.random() * 80) + 20;
-  const severity: InfrastructureReport["severity"] =
-    iriScore > 60 ? "High" : iriScore > 30 ? "Medium" : "Low";
-  return {
-    type: damageTypes[Math.floor(Math.random() * damageTypes.length)],
-    severity,
-    iriScore,
-    location: locations[Math.floor(Math.random() * locations.length)],
-    coordinates: {
-      x: Math.floor(Math.random() * 70) + 15,
-      y: Math.floor(Math.random() * 60) + 20,
-    },
-    futureIriScore: Math.min(100, iriScore + Math.floor(Math.random() * 25) + 5),
-    imageUrl,
-  };
-}

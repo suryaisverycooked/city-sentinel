@@ -18,39 +18,39 @@ export default function CityMap({ reports, timelineProgress, highlightedId, onCl
     Math.round(r.iriScore + (r.futureIriScore - r.iriScore) * timelineProgress);
 
   return (
-    <div className="glass-card relative w-full h-full min-h-[500px] overflow-hidden">
+    <div className="glass-card relative w-full h-full min-h-[500px] overflow-hidden bg-[#0f172a]">
+      {/* Background Image - Bangalore Map Style */}
+      <div 
+        className="absolute inset-0 opacity-40 pointer-events-none"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1590059530432-849c7a527027?auto=format&fit=crop&q=80')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          mixBlendMode: 'luminosity'
+        }}
+      />
+      
       {/* Grid overlay */}
-      <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <svg className="absolute inset-0 w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="hsl(var(--foreground))" strokeWidth="0.5" />
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
 
-      {/* Simulated road network */}
-      <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <path d="M10,50 Q30,20 50,50 T90,50" stroke="hsl(var(--primary))" fill="none" strokeWidth="0.3" />
-        <path d="M50,10 Q20,30 50,50 T50,90" stroke="hsl(var(--primary))" fill="none" strokeWidth="0.3" />
-        <path d="M15,20 L85,80" stroke="hsl(var(--muted-foreground))" fill="none" strokeWidth="0.2" />
-        <path d="M85,20 L15,80" stroke="hsl(var(--muted-foreground))" fill="none" strokeWidth="0.2" />
-        <path d="M5,35 L95,35" stroke="hsl(var(--muted-foreground))" fill="none" strokeWidth="0.15" />
-        <path d="M5,65 L95,65" stroke="hsl(var(--muted-foreground))" fill="none" strokeWidth="0.15" />
-        <path d="M30,5 L30,95" stroke="hsl(var(--muted-foreground))" fill="none" strokeWidth="0.15" />
-        <path d="M70,5 L70,95" stroke="hsl(var(--muted-foreground))" fill="none" strokeWidth="0.15" />
-      </svg>
-
       {/* Title */}
-      <div className="absolute top-4 left-4 z-10">
-        <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">City Infrastructure Map</p>
+      <div className="absolute top-4 left-4 z-10 flex flex-col gap-1">
+        <p className="text-[10px] text-[#38bdf8] font-mono uppercase tracking-[0.2em]">Live Monitoring</p>
+        <h2 className="text-sm font-bold text-white uppercase tracking-wider">Bangalore Infrastructure Map</h2>
       </div>
 
       {/* Markers */}
       {reports.map((r) => {
         const score = getInterpolatedScore(r);
-        const colorHsl = getIriColorHsl(score);
-        const isCritical = score > 60;
+        const color = getIriColor(score);
+        const isCritical = score > 75;
         const isHighlighted = highlightedId === r.id;
 
         return (
@@ -68,59 +68,39 @@ export default function CityMap({ reports, timelineProgress, highlightedId, onCl
             <motion.div
               className="absolute rounded-full"
               style={{
-                background: `radial-gradient(circle, ${colorHsl.replace(")", " / 0.3)")} 0%, transparent 70%)`,
-                inset: "-12px",
+                background: `radial-gradient(circle, ${color}40 0%, transparent 70%)`,
+                inset: "-16px",
               }}
-              animate={isCritical ? {
-                scale: [1, 1.4, 1],
-                opacity: [0.4, 0.15, 0.4],
-              } : {
-                opacity: 0.25,
+              animate={{
+                scale: isCritical ? [1, 1.4, 1] : [1, 1.1, 1],
+                opacity: isCritical ? [0.6, 0.2, 0.6] : 0.3,
               }}
-              transition={isCritical ? { duration: 2.5, repeat: Infinity, ease: "easeInOut" } : {}}
+              transition={{ duration: isCritical ? 1.5 : 3, repeat: Infinity, ease: "easeInOut" }}
             />
-
-            {/* Middle glow ring */}
-            <motion.div
-              className="absolute rounded-full"
-              style={{
-                border: `1px solid ${colorHsl.replace(")", " / 0.3)")}`,
-                inset: "-6px",
-              }}
-              animate={isCritical ? {
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 0.2, 0.5],
-              } : {}}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-            />
-
-            {/* Highlight ring */}
-            {isHighlighted && (
-              <motion.div
-                className="absolute rounded-full border-2"
-                style={{ borderColor: "hsl(var(--primary))", inset: "-10px" }}
-                animate={{ scale: [1, 1.3, 1], opacity: [1, 0.4, 1] }}
-                transition={{ duration: 1, repeat: Infinity }}
-              />
-            )}
 
             {/* Core dot */}
             <div
-              className="w-4 h-4 rounded-full border-2 border-background relative"
-              style={{ background: colorHsl, boxShadow: `0 0 8px ${colorHsl.replace(")", " / 0.5)")}` }}
+              className="w-4 h-4 rounded-full border-2 border-[#0f172a] relative z-10"
+              style={{ 
+                backgroundColor: color, 
+                boxShadow: `0 0 12px ${color}` 
+              }}
             />
 
             {/* Hover tooltip */}
-            <div className="absolute -top-20 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-              <div className="bg-card border border-border rounded-lg px-3 py-2 shadow-xl space-y-0.5 text-left">
-                <p className="text-xs font-semibold">{r.type}</p>
-                <p className="text-xs font-mono" style={{ color: colorHsl }}>IRI: {score}</p>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Clock size={10} />
-                  <span>TCR: {estimateTCR(score)}</span>
+            <div className="absolute -top-24 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-50">
+              <div className="bg-[#1e293b]/95 border border-white/10 backdrop-blur-md rounded-xl px-4 py-3 shadow-2xl space-y-1 text-left">
+                <p className="text-xs font-bold text-white">{r.location}</p>
+                <p className="text-[10px] text-slate-400 uppercase tracking-tight">{r.type}</p>
+                <div className="flex items-center justify-between gap-4 mt-2 pt-2 border-t border-white/5">
+                  <span className="text-xs font-mono font-bold" style={{ color: color }}>IRI: {score}</span>
+                  <div className="flex items-center gap-1 text-[10px] text-slate-400">
+                    <Clock size={10} />
+                    <span>TCR: {estimateTCR(score)}</span>
+                  </div>
                 </div>
               </div>
-              <div className="w-2 h-2 bg-card border-r border-b border-border rotate-45 mx-auto -mt-1" />
+              <div className="w-2 h-2 bg-[#1e293b] border-r border-b border-white/10 rotate-45 mx-auto -mt-1" />
             </div>
           </motion.button>
         );
